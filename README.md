@@ -69,7 +69,7 @@ await baas.release()
 ### `Baas(api_key, base_url=None, timeout=60, poll_interval=2)`
 
 - `api_key` - Your API key (required)
-- `base_url` - Service URL (default: `http://37.195.230.102:8000`)
+- `base_url` - Service URL (default: `https://dawgswarm.ru`)
 - `timeout` - Max seconds to wait for browser (default: 60)
 - `poll_interval` - Seconds between ready checks (default: 2)
 

@@ -2,7 +2,7 @@
 
 import time
 import logging
-from typing import Optional
+from typing import Optional, Tuple, Union
 
 import requests
 import httpx
@@ -64,12 +64,18 @@ class Baas:
         self._session_id: Optional[str] = None
         self._ephemeral_token: Optional[str] = None
 
-    def create(self, proxy: Optional[str] = None) -> str:
+    def create(
+        self,
+        proxy: Optional[str] = None,
+        geo: Optional[Union[str, Tuple[float, float]]] = None,
+    ) -> str:
         """
         Create browser and return ws_url.
 
         Args:
             proxy: Optional proxy URL (e.g., "socks5://user:pass@host:port")
+            geo: Optional geolocation. String for city slug (e.g., "moskva"),
+                 or tuple (lat, lon) for explicit coordinates.
 
         Returns:
             WebSocket URL for CDP connection.
@@ -78,6 +84,8 @@ class Baas:
         payload = {}
         if proxy:
             payload["proxy"] = self._parse_proxy(proxy)
+        if geo:
+            payload["geo"] = self._parse_geo(geo)
 
         # Create browser
         resp = self._request("POST", "/api/v1/browsers", json=payload or None)
@@ -168,6 +176,12 @@ class Baas:
 
         return result
 
+    def _parse_geo(self, geo: Union[str, Tuple[float, float]]) -> dict:
+        """Parse geo argument to dict. String -> slug, tuple -> lat/lon."""
+        if isinstance(geo, str):
+            return {"slug": geo}
+        return {"lat": geo[0], "lon": geo[1]}
+
     @property
     def browser_id(self) -> Optional[str]:
         """Current browser ID."""
@@ -226,11 +240,23 @@ class AsyncBaas:
             )
         return self._client
 
-    async def create(self, proxy: Optional[str] = None) -> str:
-        """Create browser and return ws_url."""
+    async def create(
+        self,
+        proxy: Optional[str] = None,
+        geo: Optional[Union[str, Tuple[float, float]]] = None,
+    ) -> str:
+        """Create browser and return ws_url.
+
+        Args:
+            proxy: Optional proxy URL (e.g., "socks5://user:pass@host:port")
+            geo: Optional geolocation. String for city slug (e.g., "moskva"),
+                 or tuple (lat, lon) for explicit coordinates.
+        """
         payload = {}
         if proxy:
             payload["proxy"] = self._parse_proxy(proxy)
+        if geo:
+            payload["geo"] = self._parse_geo(geo)
 
         resp = await self._request("POST", "/api/v1/browsers", json=payload or None)
         data = resp.get("data", resp)
@@ -320,6 +346,12 @@ class AsyncBaas:
                 result["username"] = user
                 result["password"] = passwd
         return result
+
+    def _parse_geo(self, geo: Union[str, Tuple[float, float]]) -> dict:
+        """Parse geo argument to dict. String -> slug, tuple -> lat/lon."""
+        if isinstance(geo, str):
+            return {"slug": geo}
+        return {"lat": geo[0], "lon": geo[1]}
 
     @property
     def browser_id(self) -> Optional[str]:
