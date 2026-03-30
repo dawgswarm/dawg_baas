@@ -1,8 +1,10 @@
 # dawg-baas
 
-Minimal Python SDK for BaaS (Browser as a Service).
+Python SDK for BaaS (Browser as a Service).
 
-Get browser access via CDP WebSocket URL. Use with any automation framework.
+Two tools in one SDK:
+- **Baas** — cloud browser via CDP WebSocket (Playwright, Puppeteer, Selenium)
+- **Scraper** — fast HTTP scraping with content extraction (no browser needed)
 
 ## Installation
 
@@ -10,24 +12,44 @@ Get browser access via CDP WebSocket URL. Use with any automation framework.
 pip install dawg-baas
 ```
 
-## Usage
+## Scraper — HTTP scraping
+
+Extract clean content from web pages without a browser. Fast, cheap, TLS-fingerprinted.
 
 ```python
-from dawg_baas import Baas
+from dawg_baas import Scraper
 
-# Create browser, get ws_url
-baas = Baas(api_key="your_key")
-ws_url = baas.create()
+with Scraper(api_key="your_key") as s:
+    # Single page → markdown
+    result = s.scrape("https://example.com")
+    print(result.content)
 
-# Use with your framework (Playwright, Puppeteer, Selenium, etc.)
-browser = playwright.chromium.connect_over_cdp(ws_url)
-# ... your code ...
+    # Crawl a site
+    job = s.crawl("https://example.com", max_depth=2, max_pages=20)
+    job.wait()
+    for page in job.pages:
+        print(page.url, len(page.content))
 
-# Release when done
-baas.release()
+    # Batch scrape
+    job = s.batch(["https://a.com", "https://b.com"])
+    job.wait()
 ```
 
-### Context Manager
+### Scraper Methods
+
+- `scrape(url, format="markdown", main_content=False, include_links=False)` → `ScrapeResult`
+- `crawl(url, max_depth=2, max_pages=50, concurrency=3)` → `ScrapeJob`
+- `batch(urls, concurrency=5)` → `ScrapeJob`
+- `get_job(job_id)` → `ScrapeJob`
+- `cancel_job(job_id)`
+
+Formats: `"markdown"`, `"text"`, `"html"`
+
+Jobs (crawl/batch) are async — use `job.wait()` to block until done, or `job.refresh()` to poll manually.
+
+## Browser — CDP access
+
+Get a cloud browser via WebSocket. Use with any automation framework.
 
 ```python
 from dawg_baas import Baas
@@ -52,61 +74,42 @@ from dawg_baas import AsyncBaas
 
 async with AsyncBaas(api_key="your_key") as ws_url:
     browser = await playwright.chromium.connect_over_cdp(ws_url)
-    # ...
 ```
 
-Or manually:
+### Browser Methods
 
-```python
-baas = AsyncBaas(api_key="your_key")
-ws_url = await baas.create()
-# ...
-await baas.release()
-```
-
-## API
-
-### `Baas(api_key, base_url=None, timeout=60, poll_interval=2)`
-
-- `api_key` - Your API key (required)
-- `base_url` - Service URL (default: `https://dawgswarm.ru`)
-- `timeout` - Max seconds to wait for browser (default: 60)
-- `poll_interval` - Seconds between ready checks (default: 2)
-
-#### Methods
-
-- `create(proxy=None) -> str` - Create browser, returns `ws_url`
-- `release()` - Release browser back to pool
-- `close()` - Close HTTP session
-
-#### Properties
-
-- `browser_id` - Current browser ID
-- `session_id` - Current session ID
-
-### `AsyncBaas`
-
-Same as `Baas`, but async.
+- `create(proxy=None, geo=None) -> str` — returns `ws_url`
+- `release()` — release browser back to pool
+- `close()` — close HTTP session
 
 ## Exceptions
 
 ```python
-from dawg_baas import BaasError, AuthError, RateLimitError, BrowserNotReadyError
+from dawg_baas import BaasError, AuthError, RateLimitError
 
 try:
-    with Baas(api_key="bad_key") as ws_url:
-        pass
+    result = scraper.scrape("https://example.com")
 except AuthError:
     print("Invalid API key")
 except RateLimitError as e:
     print(f"Rate limit, retry after {e.retry_after}s")
-except BrowserNotReadyError:
-    print("Browser didn't start in time")
 ```
 
 ## Examples
 
-### Playwright
+### Scrape to markdown
+
+```python
+from dawg_baas import Scraper
+
+s = Scraper(api_key="your_key")
+result = s.scrape("https://news.ycombinator.com", format="markdown", main_content=True)
+print(result.metadata["title"])
+print(result.content)
+s.close()
+```
+
+### Playwright browser
 
 ```python
 from playwright.sync_api import sync_playwright
@@ -119,21 +122,6 @@ with Baas(api_key="your_key") as ws_url:
         page.goto("https://example.com")
         print(page.title())
         browser.close()
-```
-
-### Selenium (with CDP)
-
-```python
-from selenium import webdriver
-from dawg_baas import Baas
-
-with Baas(api_key="your_key") as ws_url:
-    options = webdriver.ChromeOptions()
-    options.debugger_address = ws_url.replace("ws://", "").split("/")[0]
-    driver = webdriver.Chrome(options=options)
-    driver.get("https://example.com")
-    print(driver.title)
-    driver.quit()
 ```
 
 ## License

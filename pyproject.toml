@@ -4,8 +4,8 @@ build-backend = "hatchling.build"
 
 [project]
 name = "dawg-baas"
-version = "0.1.1"
-description = "Python SDK for BaaS (Browser as a Service) - managed headless browsers via CDP"
+version = "0.2.0"
+description = "Python SDK for BaaS (Browser as a Service) - managed headless browsers and HTTP scraping via CDP"
 readme = "README.md"
 license = "MIT"
 authors = [

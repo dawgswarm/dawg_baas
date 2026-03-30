@@ -28,6 +28,7 @@ Usage:
 
 from .version import __version__
 from .client import Baas, AsyncBaas
+from .scraper import Scraper, AsyncScraper, ScrapeResult, ScrapeJob, AsyncScrapeJob, JobPage
 from .exceptions import (
     BaasError,
     AuthError,
@@ -39,6 +40,12 @@ __all__ = [
     "__version__",
     "Baas",
     "AsyncBaas",
+    "Scraper",
+    "AsyncScraper",
+    "ScrapeResult",
+    "ScrapeJob",
+    "AsyncScrapeJob",
+    "JobPage",
     "BaasError",
     "AuthError",
     "RateLimitError",
