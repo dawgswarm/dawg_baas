@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "languages": ["ru", "en"],
+  "defaultLanguage": "ru",
+  "pages": [
+    { "slug": "installation", "file": "installation.md", "title": { "ru": "Установка", "en": "Installation" } },
+    { "slug": "quickstart", "file": "quickstart.md", "title": { "ru": "Быстрый старт", "en": "Quick Start" } },
+    { "slug": "api-reference", "file": "api-reference.md", "title": { "ru": "API Reference", "en": "API Reference" } },
+    { "slug": "examples", "file": "examples.md", "title": { "ru": "Примеры", "en": "Examples" } },
+    { "slug": "cookbook", "file": "cookbook.md", "title": { "ru": "Cookbook", "en": "Cookbook" } }
+  ]
+}
