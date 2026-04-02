@@ -191,6 +191,7 @@ class Scraper:
         timeout_ms: int = 30000,
         main_content: bool = False,
         include_links: bool = False,
+        render: Optional[str] = None,
     ) -> ScrapeResult:
         """
         Scrape a single URL and return extracted content.
@@ -202,6 +203,9 @@ class Scraper:
             timeout_ms: Page fetch timeout in milliseconds.
             main_content: Strip boilerplate (nav, footer, ads).
             include_links: Include discovered links in result.
+            render: Rendering mode — None or "auto" (default, auto-detection
+                with SPA fallback), "http" (HTTP only, no browser fallback,
+                0.2 min), or "browser" (force browser rendering, 0.5 min).
 
         Returns:
             ScrapeResult with content and metadata.
@@ -215,6 +219,8 @@ class Scraper:
         }
         if headers:
             payload["headers"] = headers
+        if render:
+            payload["render"] = render
 
         data = self._request("POST", "/api/v1/scrape", json=payload)
         return ScrapeResult(
@@ -382,6 +388,7 @@ class AsyncScraper:
         timeout_ms: int = 30000,
         main_content: bool = False,
         include_links: bool = False,
+        render: Optional[str] = None,
     ) -> ScrapeResult:
         """Scrape a single URL."""
         payload = {
@@ -393,6 +400,8 @@ class AsyncScraper:
         }
         if headers:
             payload["headers"] = headers
+        if render:
+            payload["render"] = render
 
         data = await self._request("POST", "/api/v1/scrape", json=payload)
         return ScrapeResult(

@@ -39,6 +39,7 @@ Parameters:
 - `include_links` — include list of found links (default `False`)
 - `headers` — custom HTTP headers (dict)
 - `timeout_ms` — page load timeout in ms (default 30000)
+- `render` — rendering mode: `None` / `"auto"` (default, HTTP with automatic SPA fallback to browser), `"http"` (strict HTTP only, no browser fallback), or `"browser"` (force full browser rendering, billed at 0.5 min per request)
 
 Returns `ScrapeResult`:
 - `success` — whether it succeeded
