@@ -1,81 +1,80 @@
-<!-- TODO: Translate to English -->
 # API Reference
 
-Справочник по всем методам SDK. Если вы только начинаете — лучше начните с раздела «Быстрый старт».
+Reference for all SDK methods. If you're just getting started, check the "Quick Start" section first.
 
-## Класс Scraper
+## Scraper Class
 
-HTTP-скрейпер — быстрое извлечение контента со страниц без запуска браузера.
-Использует TLS-fingerprinting для обхода антибот-защит.
+HTTP scraper — fast content extraction from pages without launching a browser.
+Uses TLS fingerprinting to bypass anti-bot protections.
 
-### Создание клиента
+### Creating a Client
 
 ```python
 from dawg_baas import Scraper
 
-scraper = Scraper(api_key="ваш_ключ")
+scraper = Scraper(api_key="your_key")
 ```
 
-Параметры:
-- `api_key` — ваш API-ключ (обязательно)
-- `base_url` — URL сервиса (по умолчанию `https://dawgswarm.ru`)
-- `timeout` — таймаут HTTP-запросов в секундах (по умолчанию 60)
+Parameters:
+- `api_key` — your API key (required)
+- `base_url` — service URL (default `https://dawgswarm.ru`)
+- `timeout` — HTTP request timeout in seconds (default 60)
 
-### Методы
+### Methods
 
 #### `scrape(url, format="markdown", ...)`
 
-Скрейпит одну страницу и возвращает `ScrapeResult`.
+Scrapes a single page and returns a `ScrapeResult`.
 
 ```python
 result = scraper.scrape("https://example.com", format="markdown")
-print(result.content)       # чистый markdown
+print(result.content)       # clean markdown
 print(result.metadata)      # {"title": "...", "word_count": 42, ...}
 ```
 
-Параметры:
-- `url` — URL страницы
-- `format` — формат вывода: `"markdown"`, `"text"`, `"html"` (по умолчанию `"markdown"`)
-- `main_content` — убрать навигацию, футер, рекламу (по умолчанию `False`)
-- `include_links` — включить список найденных ссылок (по умолчанию `False`)
-- `headers` — кастомные HTTP-заголовки (dict)
-- `timeout_ms` — таймаут загрузки страницы в мс (по умолчанию 30000)
+Parameters:
+- `url` — page URL
+- `format` — output format: `"markdown"`, `"text"`, `"html"` (default `"markdown"`)
+- `main_content` — strip navigation, footer, ads (default `False`)
+- `include_links` — include list of found links (default `False`)
+- `headers` — custom HTTP headers (dict)
+- `timeout_ms` — page load timeout in ms (default 30000)
 
-Возвращает `ScrapeResult`:
-- `success` — успешно ли
-- `content` — извлечённый контент в запрошенном формате
+Returns `ScrapeResult`:
+- `success` — whether it succeeded
+- `content` — extracted content in the requested format
 - `metadata` — `{"title", "description", "language", "word_count"}`
-- `links` — список ссылок (если `include_links=True`)
-- `final_url` — финальный URL после редиректов
-- `status_code` — HTTP-статус целевой страницы
-- `elapsed_ms` — время выполнения
+- `links` — list of links (if `include_links=True`)
+- `final_url` — final URL after redirects
+- `status_code` — target page HTTP status
+- `elapsed_ms` — execution time
 
 #### `crawl(url, max_depth=2, max_pages=50, ...)`
 
-Рекурсивный обход сайта по ссылкам. Возвращает `ScrapeJob` — задачу, которая выполняется в фоне.
+Recursive site crawl following links. Returns a `ScrapeJob` — a background task.
 
 ```python
 job = scraper.crawl("https://example.com", max_depth=2, max_pages=20)
-job.wait()  # ждём завершения
+job.wait()  # wait for completion
 
 for page in job.pages:
     print(page.url, page.metadata.get("title"))
 ```
 
-Параметры:
-- `url` — стартовый URL
-- `format` — формат контента (по умолчанию `"markdown"`)
-- `max_depth` — глубина обхода (по умолчанию 2, макс 5)
-- `max_pages` — максимум страниц (по умолчанию 50, макс 200)
-- `concurrency` — параллельные запросы (по умолчанию 3, макс 10)
-- `include_patterns` — glob-паттерны URL для включения
-- `exclude_patterns` — glob-паттерны URL для исключения
-- `main_content` — убрать шаблонные элементы
-- `timeout_ms` — таймаут на каждую страницу
+Parameters:
+- `url` — starting URL
+- `format` — content format (default `"markdown"`)
+- `max_depth` — crawl depth (default 2, max 5)
+- `max_pages` — maximum pages (default 50, max 200)
+- `concurrency` — parallel requests (default 3, max 10)
+- `include_patterns` — URL glob patterns to include
+- `exclude_patterns` — URL glob patterns to exclude
+- `main_content` — strip boilerplate elements
+- `timeout_ms` — timeout per page
 
 #### `batch(urls, concurrency=5, ...)`
 
-Параллельный скрейпинг списка URL. Возвращает `ScrapeJob`.
+Parallel scraping of a URL list. Returns a `ScrapeJob`.
 
 ```python
 job = scraper.batch([
@@ -85,51 +84,51 @@ job = scraper.batch([
 job.wait()
 
 for page in job.pages:
-    print(f"{page.url}: {len(page.content)} символов")
+    print(f"{page.url}: {len(page.content)} chars")
 ```
 
-Параметры:
-- `urls` — список URL (макс 100)
-- `format`, `concurrency`, `timeout_ms`, `main_content` — аналогично crawl
+Parameters:
+- `urls` — list of URLs (max 100)
+- `format`, `concurrency`, `timeout_ms`, `main_content` — same as crawl
 
 #### `get_job(job_id)` / `cancel_job(job_id)`
 
-Получить статус задачи или отменить её.
+Get job status or cancel it.
 
-### Работа с задачами (ScrapeJob)
+### Working with Jobs (ScrapeJob)
 
-Методы `crawl()` и `batch()` возвращают `ScrapeJob`:
+`crawl()` and `batch()` return a `ScrapeJob`:
 
 ```python
 job = scraper.crawl("https://example.com")
 
-# Дождаться завершения (поллинг каждые 2 секунды)
+# Wait for completion (polling every 2 seconds)
 job.wait(timeout=300, poll_interval=2.0)
 
-# Или проверить статус вручную
+# Or check status manually
 job.refresh()
 print(job.status)      # "running" | "completed" | "failed" | "cancelled"
 print(job.progress)    # {"completed": 5, "total": 10, "errors": 0}
 
-# Отменить
+# Cancel
 job.cancel()
 ```
 
-### Рекомендуемый способ: with
+### Recommended: with statement
 
 ```python
-with Scraper(api_key="ваш_ключ") as s:
+with Scraper(api_key="your_key") as s:
     result = s.scrape("https://example.com")
     print(result.content)
-# HTTP-сессия автоматически закрыта
+# HTTP session automatically closed
 ```
 
-### Асинхронный клиент: AsyncScraper
+### Async Client: AsyncScraper
 
 ```python
 from dawg_baas import AsyncScraper
 
-async with AsyncScraper(api_key="ваш_ключ") as s:
+async with AsyncScraper(api_key="your_key") as s:
     result = await s.scrape("https://example.com")
 
     job = await s.crawl("https://example.com", max_pages=10)
@@ -138,63 +137,63 @@ async with AsyncScraper(api_key="ваш_ключ") as s:
 
 ---
 
-## Класс Baas
+## Baas Class
 
-Основной класс для работы с сервисом. Позволяет получить браузер из облака
-и подключиться к нему через Playwright, Puppeteer или любой другой инструмент с поддержкой CDP.
+Main class for working with the service. Lets you get a browser from the cloud
+and connect to it via Playwright, Puppeteer, or any other CDP-compatible tool.
 
-### Создание клиента
+### Creating a Client
 
 ```python
 from dawg_baas import Baas
 
-baas = Baas(api_key="ваш_ключ")
+baas = Baas(api_key="your_key")
 ```
 
-Дополнительные параметры (обычно не нужны):
+Additional parameters (usually not needed):
 
-- `timeout` — сколько секунд ждать запуска браузера (по умолчанию 60)
-- `poll_interval` — как часто проверять готовность браузера (по умолчанию 2 сек)
+- `timeout` — how long to wait for browser launch in seconds (default 60)
+- `poll_interval` — how often to check browser readiness (default 2 sec)
 
-### Методы
+### Methods
 
 #### `create(proxy=None)`
 
-Запрашивает браузер из пула и возвращает URL для подключения.
-Этот URL передаётся в Playwright/Puppeteer для управления браузером.
+Requests a browser from the pool and returns a connection URL.
+This URL is passed to Playwright/Puppeteer to control the browser.
 
 ```python
-# Получаем URL для подключения к браузеру
+# Get a connection URL for the browser
 ws_url = baas.create()
 
-# Или с прокси (браузер будет ходить в интернет через ваш прокси)
+# Or with a proxy (browser will access the internet through your proxy)
 ws_url = baas.create(proxy="http://user:pass@proxy.com:8080")
 ```
 
 #### `release()`
 
-**Важно вызывать после завершения работы!** Сообщает сервису, что вы закончили
-использовать браузер. Браузер возвращается в пул и может быть выдан другому пользователю.
+**Important to call after you're done!** Tells the service you've finished
+using the browser. The browser is returned to the pool and can be assigned to another user.
 
-Если не вызвать — браузер будет считаться занятым до таймаута (несколько минут),
-и вы будете тратить лимиты впустую.
+If not called, the browser will be considered occupied until timeout (several minutes),
+and you'll waste your limits.
 
 ```python
-# Закончили работу — освобождаем браузер
+# Done working — release the browser
 baas.release()
 ```
 
-### Рекомендуемый способ: with
+### Recommended: with statement
 
-Чтобы не забыть вызвать `release()`, используйте конструкцию `with` —
-браузер освободится автоматически:
+To avoid forgetting `release()`, use the `with` statement —
+the browser is released automatically:
 
 ```python
 from dawg_baas import Baas
 from playwright.sync_api import sync_playwright
 
-with Baas(api_key="ваш_ключ") as ws_url:
-    # ws_url — это URL для подключения
+with Baas(api_key="your_key") as ws_url:
+    # ws_url is the connection URL
     with sync_playwright() as p:
         browser = p.chromium.connect_over_cdp(ws_url)
         page = browser.contexts[0].pages[0]
@@ -204,30 +203,30 @@ with Baas(api_key="ваш_ключ") as ws_url:
 
         browser.close()
 
-# Браузер автоматически освобождён
+# Browser automatically released
 ```
 
-> **Ограничение with:** при использовании `with` нельзя передать прокси.
-> Если нужен прокси — используйте `baas.create(proxy=...)` напрямую.
+> **Limitation of `with`:** when using `with`, you cannot pass a proxy.
+> If you need a proxy, use `baas.create(proxy=...)` directly.
 
-### Свойства
+### Properties
 
-- `baas.browser_id` — ID браузера (для отладки)
-- `baas.session_id` — ID сессии (для отладки)
+- `baas.browser_id` — browser ID (for debugging)
+- `baas.session_id` — session ID (for debugging)
 
 ---
 
-## Асинхронный клиент: AsyncBaas
+## Async Client: AsyncBaas
 
-Если ваш код асинхронный (используете `async/await`),
-используйте `AsyncBaas` — он работает точно так же:
+If your code is async (using `async/await`),
+use `AsyncBaas` — it works exactly the same way:
 
 ```python
 from dawg_baas import AsyncBaas
 from playwright.async_api import async_playwright
 
 async def main():
-    async with AsyncBaas(api_key="ваш_ключ") as ws_url:
+    async with AsyncBaas(api_key="your_key") as ws_url:
         async with async_playwright() as p:
             browser = await p.chromium.connect_over_cdp(ws_url)
             page = browser.contexts[0].pages[0]
@@ -237,56 +236,56 @@ async def main():
 
             await browser.close()
 
-# Запуск
+# Run
 import asyncio
 asyncio.run(main())
 ```
 
 ---
 
-## Обработка ошибок
+## Error Handling
 
-SDK выбрасывает понятные исключения, которые можно обработать:
+The SDK throws clear exceptions that you can handle:
 
 ### `AuthError`
 
-Неверный API-ключ. Проверьте, что ключ скопирован правильно.
+Invalid API key. Check that the key was copied correctly.
 
 ### `RateLimitError`
 
-Превышен лимит запросов вашего тарифа.
-Свойство `retry_after` показывает, через сколько секунд можно повторить.
+Request limit for your plan exceeded.
+The `retry_after` property shows how many seconds to wait before retrying.
 
 ### `BrowserNotReadyError`
 
-Браузер не успел запуститься за отведённое время. Попробуйте ещё раз.
+The browser didn't start within the allotted time. Try again.
 
 ### `BaasError`
 
-Базовый класс для всех ошибок. Ловите его, если хотите обработать любую ошибку SDK.
+Base class for all errors. Catch this to handle any SDK error.
 
-### Пример
+### Example
 
 ```python
 from dawg_baas import Baas, AuthError, RateLimitError, BrowserNotReadyError
 import time
 
-baas = Baas(api_key="ваш_ключ")
+baas = Baas(api_key="your_key")
 
 try:
     ws_url = baas.create()
-    # ... работа с браузером ...
+    # ... work with the browser ...
 
 except AuthError:
-    print("Ошибка: неверный API-ключ")
+    print("Error: invalid API key")
 
 except RateLimitError as e:
-    print(f"Лимит исчерпан. Подождите {e.retry_after} секунд")
+    print(f"Limit exceeded. Wait {e.retry_after} seconds")
     time.sleep(e.retry_after)
-    # Можно повторить запрос
+    # Can retry the request
 
 except BrowserNotReadyError:
-    print("Браузер не запустился, попробуйте ещё раз")
+    print("Browser didn't start, try again")
 
 finally:
     baas.release()

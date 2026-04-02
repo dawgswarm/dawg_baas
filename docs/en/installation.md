@@ -1,44 +1,43 @@
-<!-- TODO: Translate to English -->
-# Установка
+# Installation
 
-dawg-baas — это Python SDK для работы с DAWG Browser-as-a-Service.
-Позволяет управлять удалёнными браузерами через простой API.
+dawg-baas is a Python SDK for DAWG Browser-as-a-Service.
+It lets you manage remote browsers through a simple API.
 
-## Требования
+## Requirements
 
-- Python 3.9 или выше
-- pip (менеджер пакетов Python)
+- Python 3.9 or higher
+- pip (Python package manager)
 
-## Установка через pip
+## Install via pip
 
 ```bash
 pip install dawg-baas
 ```
 
-## Зависимости
+## Dependencies
 
-SDK автоматически установит следующие зависимости:
+The SDK automatically installs the following dependencies:
 
-- `httpx` — для асинхронных HTTP-запросов
-- `requests` — для синхронных HTTP-запросов
+- `httpx` — for async HTTP requests
+- `requests` — for sync HTTP requests
 
-## Дополнительные библиотеки
+## Optional Libraries
 
-Для работы с браузером рекомендуем установить одну из библиотек автоматизации:
+To work with the browser, install one of the automation libraries:
 
 ```bash
-# Playwright (рекомендуется)
+# Playwright (recommended)
 pip install playwright
 playwright install chromium
 
-# Или Selenium
+# Or Selenium
 pip install selenium
 ```
 
-## Проверка установки
+## Verify Installation
 
 ```python
 from dawg_baas import Baas
 
-print("dawg-baas установлен успешно!")
+print("dawg-baas installed successfully!")
 ```

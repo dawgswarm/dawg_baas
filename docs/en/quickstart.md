@@ -1,61 +1,60 @@
-<!-- TODO: Translate to English -->
-# Быстрый старт
+# Quick Start
 
-Начните работу с DAWG BaaS за несколько минут. Получите API-ключ в личном кабинете
-и используйте примеры ниже.
+Get started with DAWG BaaS in minutes. Get an API key from the dashboard
+and use the examples below.
 
-## Получение API-ключа
+## Getting an API Key
 
-1. Зарегистрируйтесь на сайте
-2. Перейдите в раздел «API ключи» в панели управления
-3. Создайте новый ключ
+1. Register on the website
+2. Go to the "API Keys" section in the dashboard
+3. Create a new key
 
-## Минимальный пример
+## Minimal Example
 
-Самый простой способ — использовать контекст-менеджер:
+The simplest way is to use a context manager:
 
 ```python
 from dawg_baas import Baas
 
-# Контекст-менеджер автоматически освободит браузер
-with Baas(api_key="ваш_api_ключ") as ws_url:
+# Context manager automatically releases the browser
+with Baas(api_key="your_api_key") as ws_url:
     print(f"WebSocket URL: {ws_url}")
-    # Подключайтесь к браузеру через ws_url
+    # Connect to the browser via ws_url
 ```
 
-## Пример с Playwright
+## Playwright Example
 
-Интеграция с Playwright для автоматизации браузера:
+Integration with Playwright for browser automation:
 
 ```python
 from dawg_baas import Baas
 from playwright.sync_api import sync_playwright
 
-API_KEY = "ваш_api_ключ"
+API_KEY = "your_api_key"
 
 with Baas(api_key=API_KEY) as ws_url:
     with sync_playwright() as p:
-        # Подключаемся к удалённому браузеру
+        # Connect to the remote browser
         browser = p.chromium.connect_over_cdp(ws_url)
 
-        # Получаем страницу
+        # Get the page
         page = browser.contexts[0].pages[0]
 
-        # Работаем с браузером
+        # Work with the browser
         page.goto("https://example.com")
-        print(f"Заголовок: {page.title()}")
+        print(f"Title: {page.title()}")
 
-        # Делаем скриншот
+        # Take a screenshot
         page.screenshot(path="screenshot.png")
 
         browser.close()
 
-print("Готово!")
+print("Done!")
 ```
 
-## Асинхронный пример
+## Async Example
 
-Для асинхронного кода используйте `AsyncBaas`:
+For async code, use `AsyncBaas`:
 
 ```python
 import asyncio
@@ -63,18 +62,18 @@ from dawg_baas import AsyncBaas
 from playwright.async_api import async_playwright
 
 async def main():
-    async with AsyncBaas(api_key="ваш_api_ключ") as ws_url:
+    async with AsyncBaas(api_key="your_api_key") as ws_url:
         async with async_playwright() as p:
             browser = await p.chromium.connect_over_cdp(ws_url)
             page = browser.contexts[0].pages[0]
 
             await page.goto("https://example.com")
-            print(f"Заголовок: {await page.title()}")
+            print(f"Title: {await page.title()}")
 
             await browser.close()
 
 asyncio.run(main())
 ```
 
-> **Важно:** Браузер автоматически возвращается в пул при выходе
-> из контекст-менеджера. Это позволяет эффективно переиспользовать ресурсы.
+> **Important:** The browser is automatically returned to the pool when exiting
+> the context manager. This allows efficient resource reuse.
