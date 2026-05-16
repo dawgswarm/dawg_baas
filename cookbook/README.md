@@ -1,11 +1,11 @@
 # Cookbook
 
-Real-world examples using dawg-baas SDK.
+Real-world examples using dawg-sdk-python SDK.
 
 ## Setup
 
 ```bash
-pip install dawg-baas playwright
+pip install dawg-sdk-python playwright
 playwright install chromium
 ```
 
@@ -37,7 +37,7 @@ All examples follow the same pattern:
 
 ```python
 from playwright.sync_api import sync_playwright
-from dawg_baas import Baas
+from dawg_sdk import Baas
 
 API_KEY = "your_api_key"
 
@@ -56,7 +56,7 @@ with Baas(api_key=API_KEY) as ws_url:
 ## With Proxy
 
 ```python
-from dawg_baas import Baas
+from dawg_sdk import Baas
 
 baas = Baas(api_key=API_KEY)
 ws_url = baas.create(proxy="socks5://user:pass@host:port")

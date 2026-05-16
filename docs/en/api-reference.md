@@ -10,7 +10,7 @@ Uses TLS fingerprinting to bypass anti-bot protections.
 ### Creating a Client
 
 ```python
-from dawg_baas import Scraper
+from dawg_sdk import Scraper
 
 scraper = Scraper(api_key="your_key")
 ```
@@ -127,7 +127,7 @@ with Scraper(api_key="your_key") as s:
 ### Async Client: AsyncScraper
 
 ```python
-from dawg_baas import AsyncScraper
+from dawg_sdk import AsyncScraper
 
 async with AsyncScraper(api_key="your_key") as s:
     result = await s.scrape("https://example.com")
@@ -146,7 +146,7 @@ and connect to it via Playwright, Puppeteer, or any other CDP-compatible tool.
 ### Creating a Client
 
 ```python
-from dawg_baas import Baas
+from dawg_sdk import Baas
 
 baas = Baas(api_key="your_key")
 ```
@@ -190,7 +190,7 @@ To avoid forgetting `release()`, use the `with` statement —
 the browser is released automatically:
 
 ```python
-from dawg_baas import Baas
+from dawg_sdk import Baas
 from playwright.sync_api import sync_playwright
 
 with Baas(api_key="your_key") as ws_url:
@@ -223,7 +223,7 @@ If your code is async (using `async/await`),
 use `AsyncBaas` — it works exactly the same way:
 
 ```python
-from dawg_baas import AsyncBaas
+from dawg_sdk import AsyncBaas
 from playwright.async_api import async_playwright
 
 async def main():
@@ -268,7 +268,7 @@ Base class for all errors. Catch this to handle any SDK error.
 ### Example
 
 ```python
-from dawg_baas import Baas, AuthError, RateLimitError, BrowserNotReadyError
+from dawg_sdk import Baas, AuthError, RateLimitError, BrowserNotReadyError
 import time
 
 baas = Baas(api_key="your_key")

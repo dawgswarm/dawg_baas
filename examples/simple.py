@@ -1,6 +1,6 @@
 """Simple example - get browser, use it, release."""
 
-from dawg_baas import Baas
+from dawg_sdk import Baas
 
 API_KEY = "your_api_key"
 

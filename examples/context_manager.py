@@ -1,6 +1,6 @@
 """Context manager - auto release on exit."""
 
-from dawg_baas import Baas
+from dawg_sdk import Baas
 
 API_KEY = "your_api_key"
 

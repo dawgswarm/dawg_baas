@@ -7,7 +7,7 @@ Basic SDK usage examples for various scenarios.
 Simple example without a context manager:
 
 ```python
-from dawg_baas import Baas
+from dawg_sdk import Baas
 
 baas = Baas(api_key="your_api_key")
 
@@ -28,7 +28,7 @@ finally:
 
 ```python
 import asyncio
-from dawg_baas import AsyncBaas
+from dawg_sdk import AsyncBaas
 
 async def main():
     baas = AsyncBaas(api_key="your_api_key")
@@ -52,7 +52,7 @@ asyncio.run(main())
 Recommended approach — browser is automatically released:
 
 ```python
-from dawg_baas import Baas
+from dawg_sdk import Baas
 
 with Baas(api_key="your_api_key") as ws_url:
     print(f"Browser ready: {ws_url}")
@@ -68,7 +68,7 @@ SOCKS5 and HTTP proxies are supported. When using a proxy, manage
 the browser manually (context manager `with` does not support proxy):
 
 ```python
-from dawg_baas import Baas
+from dawg_sdk import Baas
 
 # Formats: socks5://user:pass@host:port or http://user:pass@host:port
 PROXY = "http://user:pass@proxy.example.com:8080"
@@ -85,7 +85,7 @@ finally:
 ## With Playwright
 
 ```python
-from dawg_baas import Baas
+from dawg_sdk import Baas
 from playwright.sync_api import sync_playwright
 
 with Baas(api_key="your_api_key") as ws_url:
@@ -102,7 +102,7 @@ with Baas(api_key="your_api_key") as ws_url:
 ## Error Handling
 
 ```python
-from dawg_baas import (
+from dawg_sdk import (
     Baas,
     BaasError,
     AuthError,
@@ -144,7 +144,7 @@ run_with_retry("your_api_key")
 
 ```python
 import asyncio
-from dawg_baas import AsyncBaas
+from dawg_sdk import AsyncBaas
 
 async def process_url(api_key: str, url: str):
     async with AsyncBaas(api_key=api_key) as ws_url:

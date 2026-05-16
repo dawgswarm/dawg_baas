@@ -3,9 +3,9 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "dawg-baas"
-version = "0.2.1"
-description = "Python SDK for BaaS (Browser as a Service) - managed headless browsers and HTTP scraping via CDP"
+name = "dawg-sdk-python"
+version = "0.3.0"
+description = "Python SDK for DAWG platform - managed headless browsers and HTTP scraping via CDP"
 readme = "README.md"
 license = "MIT"
 authors = [
@@ -40,15 +40,15 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/dawgswarm/dawg_baas"
-Repository = "https://github.com/dawgswarm/dawg_baas"
-Issues = "https://github.com/dawgswarm/dawg_baas/issues"
+Homepage = "https://github.com/dawgswarm/dawg-sdk-python"
+Repository = "https://github.com/dawgswarm/dawg-sdk-python"
+Issues = "https://github.com/dawgswarm/dawg-sdk-python/issues"
 
 [tool.hatch.build.targets.sdist]
 include = ["/src"]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/dawg_baas"]
+packages = ["src/dawg_sdk"]
 
 [tool.ruff]
 line-length = 100

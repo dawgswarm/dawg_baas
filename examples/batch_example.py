@@ -1,6 +1,6 @@
 """Batch example — scrape multiple URLs in parallel."""
 
-from dawg_baas import Scraper
+from dawg_sdk import Scraper
 
 urls = [
     "https://example.com",

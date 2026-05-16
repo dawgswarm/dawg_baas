@@ -1,4 +1,4 @@
-# dawg-baas
+# dawg-sdk-python
 
 Python SDK for BaaS (Browser as a Service).
 
@@ -9,7 +9,7 @@ Two tools in one SDK:
 ## Installation
 
 ```bash
-pip install dawg-baas
+pip install dawg-sdk-python
 ```
 
 ## Scraper — HTTP scraping
@@ -17,7 +17,7 @@ pip install dawg-baas
 Extract clean content from web pages without a browser. Fast, cheap, TLS-fingerprinted.
 
 ```python
-from dawg_baas import Scraper
+from dawg_sdk import Scraper
 
 with Scraper(api_key="your_key") as s:
     # Single page → markdown
@@ -52,7 +52,7 @@ Jobs (crawl/batch) are async — use `job.wait()` to block until done, or `job.r
 Get a cloud browser via WebSocket. Use with any automation framework.
 
 ```python
-from dawg_baas import Baas
+from dawg_sdk import Baas
 
 with Baas(api_key="your_key") as ws_url:
     browser = playwright.chromium.connect_over_cdp(ws_url)
@@ -70,7 +70,7 @@ ws_url = baas.create(proxy="socks5://user:pass@host:port")
 ### Async
 
 ```python
-from dawg_baas import AsyncBaas
+from dawg_sdk import AsyncBaas
 
 async with AsyncBaas(api_key="your_key") as ws_url:
     browser = await playwright.chromium.connect_over_cdp(ws_url)
@@ -85,7 +85,7 @@ async with AsyncBaas(api_key="your_key") as ws_url:
 ## Exceptions
 
 ```python
-from dawg_baas import BaasError, AuthError, RateLimitError
+from dawg_sdk import BaasError, AuthError, RateLimitError
 
 try:
     result = scraper.scrape("https://example.com")
@@ -100,7 +100,7 @@ except RateLimitError as e:
 ### Scrape to markdown
 
 ```python
-from dawg_baas import Scraper
+from dawg_sdk import Scraper
 
 s = Scraper(api_key="your_key")
 result = s.scrape("https://news.ycombinator.com", format="markdown", main_content=True)
@@ -113,7 +113,7 @@ s.close()
 
 ```python
 from playwright.sync_api import sync_playwright
-from dawg_baas import Baas
+from dawg_sdk import Baas
 
 with Baas(api_key="your_key") as ws_url:
     with sync_playwright() as p:

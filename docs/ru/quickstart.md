@@ -14,7 +14,7 @@
 Самый простой способ — использовать контекст-менеджер:
 
 ```python
-from dawg_baas import Baas
+from dawg_sdk import Baas
 
 # Контекст-менеджер автоматически освободит браузер
 with Baas(api_key="ваш_api_ключ") as ws_url:
@@ -27,7 +27,7 @@ with Baas(api_key="ваш_api_ключ") as ws_url:
 Интеграция с Playwright для автоматизации браузера:
 
 ```python
-from dawg_baas import Baas
+from dawg_sdk import Baas
 from playwright.sync_api import sync_playwright
 
 API_KEY = "ваш_api_ключ"
@@ -58,7 +58,7 @@ print("Готово!")
 
 ```python
 import asyncio
-from dawg_baas import AsyncBaas
+from dawg_sdk import AsyncBaas
 from playwright.async_api import async_playwright
 
 async def main():

@@ -10,7 +10,7 @@ HTTP-скрейпер — быстрое извлечение контента �
 ### Создание клиента
 
 ```python
-from dawg_baas import Scraper
+from dawg_sdk import Scraper
 
 scraper = Scraper(api_key="ваш_ключ")
 ```
@@ -127,7 +127,7 @@ with Scraper(api_key="ваш_ключ") as s:
 ### Асинхронный клиент: AsyncScraper
 
 ```python
-from dawg_baas import AsyncScraper
+from dawg_sdk import AsyncScraper
 
 async with AsyncScraper(api_key="ваш_ключ") as s:
     result = await s.scrape("https://example.com")
@@ -146,7 +146,7 @@ async with AsyncScraper(api_key="ваш_ключ") as s:
 ### Создание клиента
 
 ```python
-from dawg_baas import Baas
+from dawg_sdk import Baas
 
 baas = Baas(api_key="ваш_ключ")
 ```
@@ -190,7 +190,7 @@ baas.release()
 браузер освободится автоматически:
 
 ```python
-from dawg_baas import Baas
+from dawg_sdk import Baas
 from playwright.sync_api import sync_playwright
 
 with Baas(api_key="ваш_ключ") as ws_url:
@@ -223,7 +223,7 @@ with Baas(api_key="ваш_ключ") as ws_url:
 используйте `AsyncBaas` — он работает точно так же:
 
 ```python
-from dawg_baas import AsyncBaas
+from dawg_sdk import AsyncBaas
 from playwright.async_api import async_playwright
 
 async def main():
@@ -268,7 +268,7 @@ SDK выбрасывает понятные исключения, которые
 ### Пример
 
 ```python
-from dawg_baas import Baas, AuthError, RateLimitError, BrowserNotReadyError
+from dawg_sdk import Baas, AuthError, RateLimitError, BrowserNotReadyError
 import time
 
 baas = Baas(api_key="ваш_ключ")

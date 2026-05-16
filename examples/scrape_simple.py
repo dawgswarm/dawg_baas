@@ -1,6 +1,6 @@
 """Simple scrape example — extract page content as markdown."""
 
-from dawg_baas import Scraper
+from dawg_sdk import Scraper
 
 scraper = Scraper(api_key="your_api_key_here")
 

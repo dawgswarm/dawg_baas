@@ -1,6 +1,6 @@
 """Crawl example — recursively scrape a website."""
 
-from dawg_baas import Scraper
+from dawg_sdk import Scraper
 
 with Scraper(api_key="your_api_key_here") as scraper:
     # Start crawl — returns immediately

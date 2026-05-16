@@ -7,7 +7,7 @@
 Простой пример без контекст-менеджера:
 
 ```python
-from dawg_baas import Baas
+from dawg_sdk import Baas
 
 baas = Baas(api_key="ваш_api_ключ")
 
@@ -28,7 +28,7 @@ finally:
 
 ```python
 import asyncio
-from dawg_baas import AsyncBaas
+from dawg_sdk import AsyncBaas
 
 async def main():
     baas = AsyncBaas(api_key="ваш_api_ключ")
@@ -52,7 +52,7 @@ asyncio.run(main())
 Рекомендуемый способ — браузер автоматически освобождается:
 
 ```python
-from dawg_baas import Baas
+from dawg_sdk import Baas
 
 with Baas(api_key="ваш_api_ключ") as ws_url:
     print(f"Браузер готов: {ws_url}")
@@ -68,7 +68,7 @@ with Baas(api_key="ваш_api_ключ") as ws_url:
 управлять браузером вручную (контекст-менеджер `with` не поддерживает прокси):
 
 ```python
-from dawg_baas import Baas
+from dawg_sdk import Baas
 
 # Форматы: socks5://user:pass@host:port или http://user:pass@host:port
 PROXY = "http://user:pass@proxy.example.com:8080"
@@ -85,7 +85,7 @@ finally:
 ## С Playwright
 
 ```python
-from dawg_baas import Baas
+from dawg_sdk import Baas
 from playwright.sync_api import sync_playwright
 
 with Baas(api_key="ваш_api_ключ") as ws_url:
@@ -102,7 +102,7 @@ with Baas(api_key="ваш_api_ключ") as ws_url:
 ## Обработка ошибок
 
 ```python
-from dawg_baas import (
+from dawg_sdk import (
     Baas,
     BaasError,
     AuthError,
@@ -144,7 +144,7 @@ run_with_retry("ваш_api_ключ")
 
 ```python
 import asyncio
-from dawg_baas import AsyncBaas
+from dawg_sdk import AsyncBaas
 
 async def process_url(api_key: str, url: str):
     async with AsyncBaas(api_key=api_key) as ws_url:

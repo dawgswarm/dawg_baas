@@ -17,7 +17,7 @@
 import json
 import re
 import time
-from dawg_baas import Baas
+from dawg_sdk import Baas
 from playwright.sync_api import sync_playwright
 
 API_KEY = "ваш_api_ключ"
@@ -68,7 +68,7 @@ finally:
 > Для работы с прокси используйте ручное управление.
 
 ```python
-from dawg_baas import Baas
+from dawg_sdk import Baas
 from playwright.sync_api import sync_playwright
 
 # Без прокси — можно использовать with
@@ -93,7 +93,7 @@ with Baas(api_key="ваш_api_ключ") as ws_url:
 ### with
 
 ```python
-from dawg_baas import Baas
+from dawg_sdk import Baas
 from playwright.sync_api import sync_playwright
 
 API_KEY = "ваш_api_ключ"
@@ -122,7 +122,7 @@ with Baas(api_key=API_KEY) as ws_url:
 ### Ручное управление
 
 ```python
-from dawg_baas import Baas
+from dawg_sdk import Baas
 from playwright.sync_api import sync_playwright
 
 API_KEY = "ваш_api_ключ"
@@ -164,7 +164,7 @@ finally:
 ### with
 
 ```python
-from dawg_baas import Baas
+from dawg_sdk import Baas
 from playwright.sync_api import sync_playwright
 
 API_KEY = "ваш_api_ключ"
@@ -194,7 +194,7 @@ with Baas(api_key=API_KEY) as ws_url:
 ### Ручное управление
 
 ```python
-from dawg_baas import Baas
+from dawg_sdk import Baas
 from playwright.sync_api import sync_playwright
 
 API_KEY = "ваш_api_ключ"
@@ -236,7 +236,7 @@ finally:
 ### with
 
 ```python
-from dawg_baas import Baas
+from dawg_sdk import Baas
 from playwright.sync_api import sync_playwright
 
 API_KEY = "ваш_api_ключ"
@@ -271,7 +271,7 @@ with Baas(api_key=API_KEY) as ws_url:
 ### Ручное управление
 
 ```python
-from dawg_baas import Baas
+from dawg_sdk import Baas
 from playwright.sync_api import sync_playwright
 
 API_KEY = "ваш_api_ключ"
@@ -317,7 +317,7 @@ finally:
 
 ```python
 import base64
-from dawg_baas import Baas
+from dawg_sdk import Baas
 from playwright.sync_api import sync_playwright
 
 API_KEY = "ваш_api_ключ"
@@ -354,7 +354,7 @@ with Baas(api_key=API_KEY) as ws_url:
 
 ```python
 import base64
-from dawg_baas import Baas
+from dawg_sdk import Baas
 from playwright.sync_api import sync_playwright
 
 API_KEY = "ваш_api_ключ"
@@ -401,7 +401,7 @@ finally:
 ### with
 
 ```python
-from dawg_baas import Baas
+from dawg_sdk import Baas
 from playwright.sync_api import sync_playwright
 
 API_KEY = "ваш_api_ключ"
@@ -438,7 +438,7 @@ with Baas(api_key=API_KEY) as ws_url:
 ### Ручное управление
 
 ```python
-from dawg_baas import Baas
+from dawg_sdk import Baas
 from playwright.sync_api import sync_playwright
 
 API_KEY = "ваш_api_ключ"
@@ -485,7 +485,7 @@ finally:
 ### with
 
 ```python
-from dawg_baas import Baas
+from dawg_sdk import Baas
 from playwright.sync_api import sync_playwright
 
 API_KEY = "ваш_api_ключ"
@@ -516,7 +516,7 @@ with Baas(api_key=API_KEY) as ws_url:
 ### Ручное управление
 
 ```python
-from dawg_baas import Baas
+from dawg_sdk import Baas
 from playwright.sync_api import sync_playwright
 
 API_KEY = "ваш_api_ключ"

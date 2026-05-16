@@ -1,6 +1,6 @@
 """Example with proxy."""
 
-from dawg_baas import Baas
+from dawg_sdk import Baas
 
 API_KEY = "your_api_key"
 PROXY = "socks5://user:pass@proxy.example.com:1080"

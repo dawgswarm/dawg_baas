@@ -11,7 +11,7 @@ import httpx
 
 from .exceptions import BaasError, AuthError, RateLimitError
 
-logger = logging.getLogger("dawg_baas")
+logger = logging.getLogger("dawg_sdk")
 
 DEFAULT_BASE_URL = "https://dawgswarm.ru"
 

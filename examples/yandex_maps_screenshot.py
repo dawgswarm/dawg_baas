@@ -1,7 +1,7 @@
 """Скриншот Яндекс Карт с геолокацией Бердска."""
 
 import os
-from dawg_baas import Baas
+from dawg_sdk import Baas
 import time
 from playwright.sync_api import sync_playwright
 

@@ -14,7 +14,7 @@ and use the examples below.
 The simplest way is to use a context manager:
 
 ```python
-from dawg_baas import Baas
+from dawg_sdk import Baas
 
 # Context manager automatically releases the browser
 with Baas(api_key="your_api_key") as ws_url:
@@ -27,7 +27,7 @@ with Baas(api_key="your_api_key") as ws_url:
 Integration with Playwright for browser automation:
 
 ```python
-from dawg_baas import Baas
+from dawg_sdk import Baas
 from playwright.sync_api import sync_playwright
 
 API_KEY = "your_api_key"
@@ -58,7 +58,7 @@ For async code, use `AsyncBaas`:
 
 ```python
 import asyncio
-from dawg_baas import AsyncBaas
+from dawg_sdk import AsyncBaas
 from playwright.async_api import async_playwright
 
 async def main():

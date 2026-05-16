@@ -11,7 +11,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 from playwright.sync_api import sync_playwright
-from dawg_baas import Baas
+from dawg_sdk import Baas
 
 API_KEY = "your_api_key"
 OUTPUT_DIR = Path("pdfs")

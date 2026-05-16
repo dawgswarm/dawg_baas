@@ -1,6 +1,6 @@
 # Установка
 
-dawg-baas — это Python SDK для работы с DAWG Browser-as-a-Service.
+dawg-sdk-python — это Python SDK для работы с DAWG Browser-as-a-Service.
 Позволяет управлять удалёнными браузерами через простой API.
 
 ## Требования
@@ -11,7 +11,7 @@ dawg-baas — это Python SDK для работы с DAWG Browser-as-a-Service
 ## Установка через pip
 
 ```bash
-pip install dawg-baas
+pip install dawg-sdk-python
 ```
 
 ## Зависимости
@@ -37,7 +37,7 @@ pip install selenium
 ## Проверка установки
 
 ```python
-from dawg_baas import Baas
+from dawg_sdk import Baas
 
-print("dawg-baas установлен успешно!")
+print("dawg-sdk-python установлен успешно!")
 ```

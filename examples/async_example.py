@@ -1,7 +1,7 @@
 """Async example."""
 
 import asyncio
-from dawg_baas import AsyncBaas
+from dawg_sdk import AsyncBaas
 
 API_KEY = "your_api_key"
 
