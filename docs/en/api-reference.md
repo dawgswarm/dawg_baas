@@ -171,7 +171,7 @@ ws_url = baas.create()
 ws_url = baas.create(proxy="http://user:pass@proxy.com:8080")
 ```
 
-#### `release()`
+#### `release(session_id=None)`
 
 **Important to call after you're done!** Tells the service you've finished
 using the browser. The browser is returned to the pool and can be assigned to another user.
@@ -182,7 +182,28 @@ and you'll waste your limits.
 ```python
 # Done working — release the browser
 baas.release()
+
+# Or release someone else's / a lost session by id
+baas.release("d3f1c2b0-...")
 ```
+
+#### `list_sessions()`
+
+Returns your account's live sessions (`ACTIVE` and `IDLE`) — server-side state,
+not this client's. Browsers started by another process or by a previous run of
+your script show up here too.
+
+The main use is crash recovery: the process died, the `session_id` is gone, and
+the browser keeps running and burning minutes. Find it and kill it:
+
+```python
+for s in baas.list_sessions():
+    print(s["id"], s["status"], s["totalMinutes"])
+    baas.release(s["id"])
+```
+
+Each session is a dict with `id`, `browserInstanceId`, `status`, `startedAt`,
+`lastActivityAt`, `totalMinutes`, and more.
 
 ### Recommended: with statement
 

@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+- `Baas.list_sessions()` / `AsyncBaas.list_sessions()` — server-side list of the
+  account's live sessions (`ACTIVE` + `IDLE`), including ones created by other
+  processes.
+- `release(session_id=None)` now accepts an explicit session id, so a session
+  whose id was lost (crashed worker, restarted process) can be found via
+  `list_sessions()` and killed instead of burning minutes until the farm's
+  inactivity timeout.
+
 ## 0.3.0 — 2026-05-16
 
 **BREAKING:** Package renamed from `dawg-baas` to `dawg-sdk-python`.

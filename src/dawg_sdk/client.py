@@ -99,14 +99,43 @@ class Baas:
         ws_url = self._wait_ready()
         return ws_url
 
-    def release(self) -> None:
-        """Release browser back to pool."""
-        if self._session_id:
-            try:
-                self._request("DELETE", f"/api/v1/browsers/{self._session_id}")
-            except BaasError as e:
-                logger.warning(f"Failed to release browser: {e}")
-            finally:
+    def list_sessions(self) -> list:
+        """
+        List this account's live browser sessions (ACTIVE and IDLE).
+
+        Server-side state, so it also returns sessions created by other
+        processes or by a previous run of this one — use it to find and
+        release browsers whose session_id was lost:
+
+            for s in baas.list_sessions():
+                baas.release(s["id"])
+
+        Returns:
+            List of session dicts (id, browserInstanceId, status,
+            startedAt, lastActivityAt, totalMinutes, ...).
+        """
+        resp = self._request("GET", "/api/v1/browsers")
+        data = resp.get("data", resp)
+        return data if isinstance(data, list) else []
+
+    def release(self, session_id: Optional[str] = None) -> None:
+        """
+        Release a browser back to the pool.
+
+        Args:
+            session_id: Session to release. Defaults to this client's own
+                session; pass an id from list_sessions() to kill an orphan.
+        """
+        target = session_id or self._session_id
+        if not target:
+            return
+
+        try:
+            self._request("DELETE", f"/api/v1/browsers/{target}")
+        except BaasError as e:
+            logger.warning(f"Failed to release browser: {e}")
+        finally:
+            if target == self._session_id:
                 self._browser_id = None
                 self._session_id = None
                 self._ephemeral_token = None
@@ -268,14 +297,43 @@ class AsyncBaas:
         ws_url = await self._wait_ready()
         return ws_url
 
-    async def release(self) -> None:
-        """Release browser."""
-        if self._session_id:
-            try:
-                await self._request("DELETE", f"/api/v1/browsers/{self._session_id}")
-            except BaasError as e:
-                logger.warning(f"Failed to release: {e}")
-            finally:
+    async def list_sessions(self) -> list:
+        """
+        List this account's live browser sessions (ACTIVE and IDLE).
+
+        Server-side state, so it also returns sessions created by other
+        processes or by a previous run of this one — use it to find and
+        release browsers whose session_id was lost:
+
+            for s in await baas.list_sessions():
+                await baas.release(s["id"])
+
+        Returns:
+            List of session dicts (id, browserInstanceId, status,
+            startedAt, lastActivityAt, totalMinutes, ...).
+        """
+        resp = await self._request("GET", "/api/v1/browsers")
+        data = resp.get("data", resp)
+        return data if isinstance(data, list) else []
+
+    async def release(self, session_id: Optional[str] = None) -> None:
+        """
+        Release a browser back to the pool.
+
+        Args:
+            session_id: Session to release. Defaults to this client's own
+                session; pass an id from list_sessions() to kill an orphan.
+        """
+        target = session_id or self._session_id
+        if not target:
+            return
+
+        try:
+            await self._request("DELETE", f"/api/v1/browsers/{target}")
+        except BaasError as e:
+            logger.warning(f"Failed to release: {e}")
+        finally:
+            if target == self._session_id:
                 self._browser_id = None
                 self._session_id = None
                 self._ephemeral_token = None
