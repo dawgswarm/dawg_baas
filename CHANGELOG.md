@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.4.0 — 2026-08-03
 
 - `Baas.list_sessions()` / `AsyncBaas.list_sessions()` — server-side list of the
   account's live sessions (`ACTIVE` + `IDLE`), including ones created by other
